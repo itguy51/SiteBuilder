@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Josh on 20/04/2016.
- */
 public class BuilderVisitor extends AbstractVisitor {
-    private PythonInterpreter pi;
+    private final PythonInterpreter pi;
     private static BuilderVisitor self;
     private BuilderVisitor(){
         pi = new PythonInterpreter();
@@ -21,6 +18,7 @@ public class BuilderVisitor extends AbstractVisitor {
                 + "from pygments.formatters import HtmlFormatter");
     }
 
+    @SuppressWarnings("unused")
     public static BuilderVisitor getInstance(){
         if(self == null)
             self = new BuilderVisitor();
@@ -35,6 +33,7 @@ public class BuilderVisitor extends AbstractVisitor {
 
     }
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "WeakerAccess"})
     final ArrayList<String> linkList = new ArrayList<String>();
     @Override
     public void visit(Link l){

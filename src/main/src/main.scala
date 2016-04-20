@@ -13,36 +13,38 @@ import scala.collection.mutable.ArrayBuffer
   */
 object main {
   def main(args: Array[String]) {
-    val actosystem = ActorSystem("ActorSystem")
-    val graph = actosystem.actorOf(Props[GraphActor], name = "Graph");
-    val reaper = actosystem.actorOf(Props[Reaper], name="Grim");
-    reaper ! SetGraph(graph);
 
-    val source: String = "C:\\Users\\Josh\\Desktop\\Site\\new\\src";
-    val out: String = "C:\\Users\\Josh\\Desktop\\Site\\new\\out";
+    val workingDir = "C:\\Users\\Josh\\Desktop\\Site\\new"
+    val actosystem = ActorSystem("ActorSystem")
+    val graph = actosystem.actorOf(Props[GraphActor], name = "Graph")
+    val reaper = actosystem.actorOf(Props[Reaper], name="Grim")
+    reaper ! SetGraph(graph)
+
+    val source: String = workingDir+ "\\src"
+    val out: String = workingDir+ "\\out"
     val head: String = new Scanner(new File(source + "\\head.txt")).useDelimiter("\\Z").next
     val foot: String = new Scanner(new File(source + "\\foot.txt")).useDelimiter("\\Z").next
 
-    val path: Array[File] = new File(source).listFiles();
-    var fileList: ArrayBuffer[String] = showFiles(path, source);
-    fileList -= ("\\head.txt", "\\foot.txt");
+    val path: Array[File] = new File(source).listFiles()
+    var fileList: ArrayBuffer[String] = showFiles(path, source)
+    fileList -= ("\\head.txt", "\\foot.txt")
     for(file <- fileList){
       if(FilenameUtils.getExtension(file).equals("md")){
-        val currentFileName: String = FilenameUtils.removeExtension(file) + ".html";
-        graph ! addNode(currentFileName.replace("\\", "/"));
-        val renderEngine = actosystem.actorOf(Props[PageRenderer]);
-        reaper ! WatchMe(renderEngine);
-        renderEngine ! Render(file, source, out, head, foot, graph);
+        val currentFileName: String = FilenameUtils.removeExtension(file) + ".html"
+        graph ! addNode(currentFileName.replace("\\", "/"))
+        val renderEngine = actosystem.actorOf(Props[PageRenderer])
+        reaper ! WatchMe(renderEngine)
+        renderEngine ! Render(file, source, out, head, foot, graph)
       }else{
-        graph ! addNode(file.replace("\\", "/"));
-        FileUtils.copyFile(new File(source + file), new File(out + file));
+        graph ! addNode(file.replace("\\", "/"))
+        FileUtils.copyFile(new File(source + file), new File(out + file))
       }
     }
 
   }
 
   def showFiles(files: Array[File], trunc: String): ArrayBuffer[String] = {
-    var filesList: ArrayBuffer[String] = new ArrayBuffer[String]();
+    var filesList: ArrayBuffer[String] = new ArrayBuffer[String]()
     for (file <- files) {
       if (file.isDirectory) {
         filesList ++= showFiles(file.listFiles, trunc)
@@ -51,6 +53,6 @@ object main {
         filesList += file.getPath.replace(trunc, "")
       }
     }
-    return filesList
+    filesList
   }
 }

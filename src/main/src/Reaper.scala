@@ -16,13 +16,13 @@ object Reaper {
 class Reaper extends Actor {
   import Reaper._
 
-  var graphRef: ActorRef = null;
+  var graphRef: ActorRef = null
   // Keep track of what we're watching
   val watched = ArrayBuffer.empty[ActorRef]
 
   // Derivations need to implement this method.  It's the
   // hook that's called when everything's dead
-  def allSoulsReaped(): Unit = context.system.shutdown();
+  def allSoulsReaped(): Unit = context.system.terminate()
 
   // Watch and check for termination
   final def receive = {
@@ -34,8 +34,8 @@ class Reaper extends Actor {
     case Terminated(ref) =>
       watched -= ref
       if (watched.isEmpty){
-        graphRef ! printReport();
-        allSoulsReaped();
+        graphRef ! printReport()
+        allSoulsReaped()
       }
   }
 }
