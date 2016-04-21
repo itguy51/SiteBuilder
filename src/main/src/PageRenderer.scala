@@ -1,7 +1,7 @@
 import java.io.File
 import java.nio.file.{Files, Paths}
 import java.util
-import java.util.{Arrays, Scanner}
+import java.util.Scanner
 
 import akka.actor.{Actor, ActorRef}
 import org.apache.commons.io.FilenameUtils

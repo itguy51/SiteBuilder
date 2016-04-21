@@ -1,7 +1,6 @@
 import java.util
 
 import akka.actor.Actor
-import akka.actor.Actor.Receive
 import org.jgrapht.DirectedGraph
 import org.jgrapht.graph.DefaultDirectedGraph
 
@@ -48,7 +47,7 @@ class GraphActor extends Actor {
     case printReport() =>
       val vs: util.Set[String] = dg.vertexSet()
       for(i: String <- vs.asScala){
-        var inc: util.Set[String] = dg.incomingEdgesOf(i)
+        val inc: util.Set[String] = dg.incomingEdgesOf(i)
         if(inc.size() < 1){
           if(!i.contains("index")){
             println("WARN: No incoming links to page " + i)

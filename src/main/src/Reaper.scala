@@ -1,11 +1,6 @@
-import java.util.concurrent.TimeUnit
-
 import akka.actor.{Actor, ActorRef, Terminated}
-import akka.util.Timeout
 
 import scala.collection.mutable.ArrayBuffer
-import scala.concurrent.duration.FiniteDuration
-import scala.util.{Failure, Success}
 
 object Reaper {
   // Used by others to register an Actor for watching

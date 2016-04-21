@@ -2,8 +2,7 @@ import java.io.File
 import java.util.Scanner
 
 import Reaper.{SetGraph, WatchMe}
-import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.routing.{RoundRobinPool, SmallestMailboxPool}
+import akka.actor.{ActorSystem, Props}
 import org.apache.commons.io.{FileUtils, FilenameUtils}
 
 import scala.collection.mutable.ArrayBuffer
@@ -15,9 +14,9 @@ object main {
   def main(args: Array[String]) {
 
     val workingDir = "C:\\Users\\Josh\\Desktop\\Site\\new"
-    val actosystem = ActorSystem("ActorSystem")
-    val graph = actosystem.actorOf(Props[GraphActor], name = "Graph")
-    val reaper = actosystem.actorOf(Props[Reaper], name="Grim")
+    val actorsystem = ActorSystem("ActorSystem")
+    val graph = actorsystem.actorOf(Props[GraphActor], name = "Graph")
+    val reaper = actorsystem.actorOf(Props[Reaper], name="Grim")
     reaper ! SetGraph(graph)
 
     val source: String = workingDir+ "\\src"
@@ -32,7 +31,7 @@ object main {
       if(FilenameUtils.getExtension(file).equals("md")){
         val currentFileName: String = FilenameUtils.removeExtension(file) + ".html"
         graph ! addNode(currentFileName.replace("\\", "/"))
-        val renderEngine = actosystem.actorOf(Props[PageRenderer])
+        val renderEngine = actorsystem.actorOf(Props[PageRenderer])
         reaper ! WatchMe(renderEngine)
         renderEngine ! Render(file, source, out, head, foot, graph)
       }else{
