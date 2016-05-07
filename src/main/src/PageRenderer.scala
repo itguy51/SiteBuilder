@@ -32,7 +32,7 @@ class PageRenderer extends Actor{
       val currentFileName: String = FilenameUtils.removeExtension(rel) + ".html"
       val inputSourceCode: String = new Scanner(new File(inputSourceFile)).useDelimiter("\\Z").next()
       val document: Node = parser.parse(inputSourceCode)
-      val bv: BuilderVisitor = BuilderVisitor.getInstance()
+      val bv: BuilderVisitor = new BuilderVisitor()
       document.accept(bv)
       val links = bv.linkList
       for (i <- links) {

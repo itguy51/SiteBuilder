@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 object main {
   def main(args: Array[String]) {
 
-    val workingDir = "C:\\Users\\Josh\\Desktop\\Site\\new"
+    val workingDir = "C:\\Users\\Josh-MBP\\Documents\\Site\\new"
     val actorsystem = ActorSystem("ActorSystem")
     val graph = actorsystem.actorOf(Props[GraphActor], name = "Graph")
     val reaper = actorsystem.actorOf(Props[Reaper], name="Grim")
