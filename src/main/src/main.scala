@@ -28,7 +28,7 @@ object main {
 
     val path: Array[File] = new File(source).listFiles()
     var fileList: ArrayBuffer[String] = showFiles(path, source)
-    fileList -= ("\\head.txt", "\\foot.txt", "\\config.json")
+    fileList -= ("\\config.json")
     for(file <- fileList){
       if(FilenameUtils.getExtension(file).equals("md")){
         val currentFileName: String = FilenameUtils.removeExtension(file) + ".html"
