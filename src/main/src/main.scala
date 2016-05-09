@@ -14,11 +14,13 @@ object main {
   def main(args: Array[String]) {
 
     val workingDir = "C:\\Users\\Josh-MBP\\Documents\\Site\\new"
+    TemplateBuilder.init(workingDir + "\\src\\config.json")
     val actorsystem = ActorSystem("ActorSystem")
     val graph = actorsystem.actorOf(Props[GraphActor], name = "Graph")
     val reaper = actorsystem.actorOf(Props[Reaper], name="Grim")
-    reaper ! SetGraph(graph)
+    reaper ! SetGraph(graph) //This also starts the runtimer.
 
+    val pi = SyntaxHighlighter.getInstance()//Spin up the python stuff.
     val source: String = workingDir+ "\\src"
     val out: String = workingDir+ "\\out"
     val head: String = new Scanner(new File(source + "\\head.txt")).useDelimiter("\\Z").next
@@ -26,7 +28,7 @@ object main {
 
     val path: Array[File] = new File(source).listFiles()
     var fileList: ArrayBuffer[String] = showFiles(path, source)
-    fileList -= ("\\head.txt", "\\foot.txt")
+    fileList -= ("\\head.txt", "\\foot.txt", "\\config.json")
     for(file <- fileList){
       if(FilenameUtils.getExtension(file).equals("md")){
         val currentFileName: String = FilenameUtils.removeExtension(file) + ".html"

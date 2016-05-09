@@ -51,7 +51,7 @@ class PageRenderer extends Actor{
       }
 
       val endTime: Long = System.nanoTime()
-      output = head + output + foot + "\n<!-- Rendered from " + rel + " in " + (endTime - startTime) / 1000000 + "ms -->"
+      output = TemplateBuilder.getInstance().RenderPage(output) + "\n<!-- Rendered from " + rel + " in " + (endTime - startTime) / 1000000 + "ms -->"
       Files.write(Paths.get(out + currentFileName), output.getBytes())
       context.stop(self)
   }
